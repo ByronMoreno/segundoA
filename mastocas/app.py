@@ -36,6 +36,21 @@ def get_users():
     print(user)    
     return jsonify(user)
 
+#Metodo es para html
+#Consultar todos los usuarios
+@app.route('/personas', methods=['GET'])
+def get_users_html():
+    #Paso 1, conectar a la base de datos
+    conn = get_database()
+    #Paso 2 definir el cursor
+    cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
+    #Paso 3 enviar la sentencia sql al cursor
+    cursor.execute("select * from users")
+    #Paso 4 sacar datos a pantalla
+    datos_consulta_select = cursor.fetchall()
+    #Paso 5 enviar los datos de la consulta al html
+    return render_template('select.html', usuarios=datos_consulta_select)
+
 #Para colocar en modo debug, modo desarrallador
 if __name__ == '__main__':
     app.run(debug=True)
