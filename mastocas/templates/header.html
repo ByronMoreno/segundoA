@@ -1,0 +1,41 @@
+{% extends 'master.html' %} 
+
+{% block title %} CRUD Flask {% endblock %}
+ 
+ 
+{% block body %}
+
+<!-- Nabvar -->
+<nav class="navbar navbar-expand-lg bg-dark border-bottom border-bottom-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img class="imgLogo" src="https://1000marcas.net/wp-content/uploads/2020/01/logo-Lamborghini.png" alt="">
+      </a>
+      <button class="navbar-toggler bg-warning" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active text-light" aria-current="page" href="#">Concesionaria</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" href="#">Vehículos</a>
+          </li>
+          <!-- Tooltip -->
+          <li class="nav-item">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-custom-class="custom"
+              data-bs-placement="bottom" title="Primero compra un vehículo">Garantía</button>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
+          <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <br>
+
+{% endblock %}

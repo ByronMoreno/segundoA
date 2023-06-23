@@ -18,7 +18,8 @@ def get_database():
 
 @app.route('/')
 def index():
-    return 'Prueba de funcionamiento'
+    #return 'Prueba de funcionamiento'
+    return render_template('index.html')
 
 #Consultar todos los usuarios
 @app.get('/ap/users')
