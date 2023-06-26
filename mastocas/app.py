@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request, redirect
 from psycopg2 import connect, extras
 
 #Instanciar la clase de flask
@@ -50,6 +50,42 @@ def get_users_html():
     datos_consulta_select = cursor.fetchall()
     #Paso 5 enviar los datos de la consulta al html
     return render_template('select.html', usuarios=datos_consulta_select)
+
+#Actualizar desde html
+@app.route('/<int:id>/edit', methods=['GET', 'POST'])
+def update_user_html(id):
+    #Paso 1, conectar a la base de datos
+    conn = get_database()
+    #Paso 2 definir el cursor
+    cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
+    #Paso 3 enviar la sentencia sql al cursor
+    cursor.execute("select * from users where id = %s", (id,))
+    #Paso 4 sacar datos a pantalla
+    consultaPorId = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if request.method == 'POST': 
+        nombre = request.form['nombre'] 
+        edad = request.form['age']
+        descripcion = request.form['description']
+        #Conectar a la base de datos
+        conn = get_database()
+        #Paso 2 definir el cursor
+        cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
+        #Paso 3 enviar la sentencia sql al cursor
+        cursor.execute("UPDATE users SET name=%s, age=%s, description=%s WHERE id=%s RETURNING *",
+                    (nombre, edad, descripcion, id))
+        #Paso 4 sacar datos a pantalla
+        user_updating = cursor.fetchone()
+        if user_updating:
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect('/personas')
+        #abort(404)
+    return render_template('update.html', user=consultaPorId)
+
 
 #Para colocar en modo debug, modo desarrallador
 if __name__ == '__main__':
