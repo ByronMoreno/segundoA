@@ -87,6 +87,54 @@ def update_user_html(id):
     return render_template('update.html', user=consultaPorId)
 
 
+@app.route('/<int:id>/delete', methods=['GET', 'POST'])
+def delete_user_html(id):
+    #Paso 1, conectar a la base de datos
+    conn = get_database()
+    #Paso 2 definir el cursor
+    cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
+    #Paso 3 enviar la sentencia sql al cursor
+    cursor.execute("DELETE FROM users where id = %s RETURNING *", (id,))
+    #Paso 4 sacar datos a pantalla
+    user_deleting = cursor.fetchone()
+
+    if request.method == 'POST': 
+        
+        if user_deleting:
+            conn.commit()
+            cursor.close()
+            conn.close()
+        return redirect('/personas')
+        #abort(404)
+    return render_template('delete.html', user=user_deleting)
+
+#Crear desde html
+@app.route('/crear', methods=['GET', 'POST'])
+def crear_user_html():
+
+    if request.method == 'GET':   
+        return render_template('create.html')
+
+    if request.method == 'POST': 
+        nombre = request.form['nombre'] 
+        edad = request.form['age']
+        descripcion = request.form['description']
+        #Conectar a la base de datos
+        conn = get_database()
+        #Paso 2 definir el cursor
+        cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
+        #Paso 3 enviar la sentencia sql al cursor
+        cursor.execute('INSERT INTO users(name,age,description) VALUES (%s,%s,%s) RETURNING *',
+                (nombre, edad, descripcion))
+        #Paso 4 sacar datos a pantalla
+        user_creating = cursor.fetchone()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect('/personas')
+        #abort(404)
+    
+
 #Para colocar en modo debug, modo desarrallador
 if __name__ == '__main__':
     app.run(debug=True)
