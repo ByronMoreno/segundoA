@@ -1,0 +1,19 @@
+<!--Estilos-->
+        /* Tooltip */
+        .custom {
+          --bs-tooltip-bg: rgb(255, 215, 0);
+          --bs-tooltip-color: #000;
+        }
+    
+        /* Logo de la Concesionaria */
+        .imgLogo {
+          width: 200px;
+          height: 100px;
+        }
+    
+        @media (max-width: 500px) {
+          .imgLogo {
+            width: 100px;
+            height: 50px;
+          }
+        }
